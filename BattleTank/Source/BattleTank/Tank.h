@@ -2,10 +2,12 @@
 
 #pragma once
 
-#include "TankAimingComponent.h"
+
 #include "GameFramework/Pawn.h"
 #include "Tank.generated.h"
 
+class UTankBarrel; // Forward Declaration
+class UTankAimingComponent;
 UCLASS()
 class BATTLETANK_API ATank : public APawn
 {
@@ -29,7 +31,7 @@ private:
 public:
 	void AimAt(FVector HitLocation);
 	UFUNCTION(BlueprintCallable, Category= Setups)
-	void SetBarrelReference(UStaticMeshComponent* BarrelToSet);
+	void SetBarrelReference(UTankBarrel* BarrelToSet);
 	UPROPERTY(EditAnywhere, Category = Firing)
 		float LaunchSpeed = 100000;  //speed of projectile 1000 m/s| Find a sensible value
 };

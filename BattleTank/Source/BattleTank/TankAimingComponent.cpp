@@ -1,6 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "BattleTank.h"
+//Need to include below as we call methods on Barrel object
+#include "TankBarrel.h"
 #include "TankAimingComponent.h"
 
 
@@ -24,25 +26,36 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 	//UE_LOG(LogTemp, Warning, TEXT("%s hitting at %s from %s"), *OurTankName, *HitLocation.ToString(), *BarrelLocation);
 	FVector OutLaunchVelocity;
 	FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile"));
-	if (UGameplayStatics::SuggestProjectileVelocity(this,
+	bool result = UGameplayStatics::SuggestProjectileVelocity(this,
 		OutLaunchVelocity,
 		StartLocation,
 		HitLocation,
 		LaunchSpeed,
 		false,
-		0.0f,
-		ESuggestProjVelocityTraceOption::DoNotTrace)
-		)
+		0,
+		0
+		,ESuggestProjVelocityTraceOption::DoNotTrace //Buggy Line, just comment to see bug
+	);
+
+	if (result)
 	{
 		auto AimDirection = OutLaunchVelocity.GetSafeNormal();
-		UE_LOG(LogTemp, Warning, TEXT("%s Projectile Direction calculated as %s"),*OurTankName, *AimDirection.ToString());
+		auto Time = GetWorld()->GetTimeSeconds();
+		UE_LOG(LogTemp, Warning, TEXT("%f: %s Projectile Direction calculated as %s"),Time, *OurTankName, *AimDirection.ToString());
 		//Move the Barrel
-		MoveBarrelTowards(AimDirection);
+		Barrel->MoveTo(AimDirection.Rotation().Pitch);
+		//Unused 
+		//MoveBarrelTowards(AimDirection);
 	}
+	else
+	{ // NO result found
+		auto Time = GetWorld()->GetTimeSeconds();
+		UE_LOG(LogTemp, Warning, TEXT("%f : NO result found"), Time);
 
+	}
 }
 
-void UTankAimingComponent::SetBarrelReference(UStaticMeshComponent* BarrelToSet)
+void UTankAimingComponent::SetBarrelReference(UTankBarrel* BarrelToSet)
 {
 	Barrel = BarrelToSet;
 }
@@ -53,6 +66,7 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 	auto BarrelRotator = Barrel->GetForwardVector().Rotation();
 	auto DeltaRotator = AimAsRotator - BarrelRotator;
 	UE_LOG(LogTemp, Warning, TEXT("Move Barrel to %s"), *DeltaRotator.ToString());
+	Barrel->MoveTo(10);
 	// Move the barrel according to elevation speed just the right amount
 	// this frame
 }
