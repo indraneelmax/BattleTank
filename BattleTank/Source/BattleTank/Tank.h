@@ -7,6 +7,7 @@
 #include "Tank.generated.h"
 
 class UTankBarrel; // Forward Declaration
+class UTankTurret;
 class UTankAimingComponent;
 UCLASS()
 class BATTLETANK_API ATank : public APawn
@@ -32,6 +33,8 @@ public:
 	void AimAt(FVector HitLocation);
 	UFUNCTION(BlueprintCallable, Category= Setups)
 	void SetBarrelReference(UTankBarrel* BarrelToSet);
+	UFUNCTION(BlueprintCallable, Category = Setups)
+	void SetTurretReference(UTankTurret* TurretToSet);
 	UPROPERTY(EditAnywhere, Category = Firing)
 		float LaunchSpeed = 100000;  //speed of projectile 1000 m/s| Find a sensible value
 };
