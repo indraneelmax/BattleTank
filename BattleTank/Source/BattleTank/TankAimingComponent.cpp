@@ -43,9 +43,9 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 		auto Time = GetWorld()->GetTimeSeconds();
 		UE_LOG(LogTemp, Warning, TEXT("%f: %s Projectile Direction calculated as %s"),Time, *OurTankName, *AimDirection.ToString());
 		//Move the Barrel
-		Barrel->MoveTo(AimDirection.Rotation().Pitch);
+		//Barrel->MoveTo(AimDirection.Rotation().Pitch);
 		//Unused 
-		//MoveBarrelTowards(AimDirection);
+		MoveBarrelTowards(AimDirection);
 	}
 	else
 	{ // NO result found
@@ -66,7 +66,8 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 	auto BarrelRotator = Barrel->GetForwardVector().Rotation();
 	auto DeltaRotator = AimAsRotator - BarrelRotator;
 	UE_LOG(LogTemp, Warning, TEXT("Move Barrel to %s"), *DeltaRotator.ToString());
-	Barrel->MoveTo(10);
 	// Move the barrel according to elevation speed just the right amount
 	// this frame
+	Barrel->MoveTo(DeltaRotator.Pitch);
+
 }
