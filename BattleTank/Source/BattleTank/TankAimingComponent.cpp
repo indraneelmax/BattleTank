@@ -3,6 +3,7 @@
 #include "BattleTank.h"
 //Need to include below as we call methods on Barrel object
 #include "TankBarrel.h"
+#include "TankTurret.h"
 #include "TankAimingComponent.h"
 
 
@@ -71,8 +72,10 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 	auto BarrelRotator = Barrel->GetForwardVector().Rotation();
 	auto DeltaRotator = AimAsRotator - BarrelRotator;
 	UE_LOG(LogTemp, Warning, TEXT("Move Barrel to %s"), *DeltaRotator.ToString());
+
 	// Move the barrel according to elevation speed just the right amount
 	// this frame
 	Barrel->MoveTo(DeltaRotator.Pitch);
-
+	Turret->Rotate(DeltaRotator.Yaw);
+	
 }
