@@ -32,7 +32,9 @@ private:
 	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
 
 public:
-	UPROPERTY(EditAnywhere, Category = Setup)
+	UPROPERTY(EditDefaultsOnly, Category = Firing)
+	float ReloadTime = 3; //sec 
+	UPROPERTY(EditDefaultsOnly, Category = Setup)
 	TSubclassOf <AProjectile> ProjectileBlueprint;
 	void AimAt(FVector HitLocation);
 	UFUNCTION(BlueprintCallable, Category = Firing)
@@ -41,6 +43,7 @@ public:
 	void SetBarrelReference(UTankBarrel* BarrelToSet);
 	UFUNCTION(BlueprintCallable, Category = Setups)
 	void SetTurretReference(UTankTurret* TurretToSet);
-	UPROPERTY(EditAnywhere, Category = Firing)
-		float LaunchSpeed = 100000;  //speed of projectile 1000 m/s| Find a sensible value
+	UPROPERTY(EditDefaultsOnly, Category = Firing)
+	float LaunchSpeed = 4000;  //speed of projectile 40 m/s
+	double LastFireTime = 0; // by default with f e.g 1f it returns a double type
 };
