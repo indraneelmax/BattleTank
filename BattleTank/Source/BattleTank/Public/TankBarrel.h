@@ -9,7 +9,7 @@
  * 
  */
 //Tank's Barrel properties and methods
-UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent), hidecategories=("Collision"))
+UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent)) // hidecategories=("Collision"))
 class BATTLETANK_API UTankBarrel : public UStaticMeshComponent
 {
 	GENERATED_BODY()
