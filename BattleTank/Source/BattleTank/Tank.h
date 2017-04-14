@@ -8,8 +8,10 @@
 
 class UTankBarrel; // Forward Declaration
 class UTankTurret;
-class AProjectile;
 class UTankAimingComponent;
+class AProjectile;
+class UTankMovementComponent;
+
 UCLASS()
 class BATTLETANK_API ATank : public APawn
 {
@@ -17,6 +19,13 @@ class BATTLETANK_API ATank : public APawn
 
 protected:
 	UTankAimingComponent* TankAimingComponent = nullptr;
+	//Below is the Fly-by-wire component
+	//helps in keeping AI also use same controls instead of 
+	//directly translating tank for a fair game!
+	//BlueprintReadOnly makes this component draggable into graph
+	//basically youa can acess this variable in blueprint now
+	UPROPERTY(BlueprintReadOnly) 
+	UTankMovementComponent* TankMovementComponent = nullptr;
 private:
 	// Sets default values for this pawn's properties
 	ATank();

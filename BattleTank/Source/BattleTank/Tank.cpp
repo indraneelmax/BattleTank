@@ -4,6 +4,7 @@
 #include "Tank.h"
 #include "TankBarrel.h"
 #include "Projectile.h"
+#include "TankMovementComponent.h"
 #include "TankAimingComponent.h"
 
 
@@ -16,6 +17,7 @@ ATank::ATank()
 	//Added C++ way instead of blueprint way
 	//Since Tank_BP inherits from Tank class, Tank_BP gets the component (inherits)
 	TankAimingComponent = CreateDefaultSubobject<UTankAimingComponent>(FName("Aiming Component"));
+	TankMovementComponent = CreateDefaultSubobject<UTankMovementComponent>(FName("Movement Component"));
 }
 
 // Called when the game starts or when spawned
