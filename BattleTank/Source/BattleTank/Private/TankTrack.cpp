@@ -7,7 +7,7 @@
 void UTankTrack::SetThrottle(float throttle)
 {
 	auto Name = GetName();
-	UE_LOG(LogTemp, Warning, TEXT("%s throttle at %f"), *Name, throttle);
+	//UE_LOG(LogTemp, Warning, TEXT("%s throttle at %f"), *Name, throttle);
 	auto ForceApplied = GetForwardVector() * throttle * TankMaxDrivingForce;
 	auto ForceLocation = GetComponentLocation(); //get this tracks pivot
 	//Get Root component of tank and apply force on it

@@ -24,8 +24,9 @@ protected:
 	//directly translating tank for a fair game!
 	//BlueprintReadOnly makes this component draggable into graph
 	//basically youa can acess this variable in blueprint now
-	UPROPERTY(BlueprintReadOnly) 
-	UTankMovementComponent* TankMovementComponent = nullptr;
+	//UPROPERTY(BlueprintReadOnly) 
+	//UTankMovementComponent* TankMovementComponent = nullptr;
+
 private:
 	// Sets default values for this pawn's properties
 	ATank();
