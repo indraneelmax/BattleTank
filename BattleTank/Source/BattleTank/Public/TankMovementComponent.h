@@ -17,6 +17,9 @@ class BATTLETANK_API UTankMovementComponent : public UNavMovementComponent
 public:
 	UTankTrack* LeftTrack = nullptr;
 	UTankTrack* RightTrack = nullptr;
+
+	//override this function to make the AI use our control system!
+	virtual void RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed) override;
 	//Even though in tank.h the obj/ptr of this class is blueprintReadOnly
 	// we need to make IntendTankMoveForward blueprintcallable to get 
 	// the method as well accesible in blueprint graph

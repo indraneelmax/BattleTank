@@ -16,6 +16,7 @@ void ATankAIController::BeginPlay()
 	}
 	else
 	{
+
 		UE_LOG(LogTemp, Warning, TEXT("AIController possessing %s found Player: %s"), *ControlledTank->GetName(), *PlayerTank->GetName());	
 	}
 }
@@ -23,10 +24,16 @@ void ATankAIController::BeginPlay()
 // Called every frame
 void ATankAIController::Tick(float DeltaSeconds)
 {
-	if (GetPlayerTank())
+	auto PlayerTank = GetPlayerTank();
+	if (PlayerTank)
 	{
 		auto ControlledTank = GetControlledTank();
-		ControlledTank->AimAt(GetPlayerTank()->GetActorLocation());
+		//Move towards the player
+		//Uses AI pathfinding --calls our overriden method
+		//RequestDirectMove in TankMovementComponent!
+		MoveToActor(PlayerTank, AcceptanceRadius);
+		//Aim & Fire at Player
+		ControlledTank->AimAt(PlayerTank->GetActorLocation());
 		ControlledTank->Fire();
 	}
 }
