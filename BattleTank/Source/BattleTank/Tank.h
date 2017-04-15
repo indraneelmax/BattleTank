@@ -18,6 +18,7 @@ class BATTLETANK_API ATank : public APawn
 	GENERATED_BODY()
 
 protected:
+	UPROPERTY(BlueprintReadOnly)
 	UTankAimingComponent* TankAimingComponent = nullptr;
 	//Below is the Fly-by-wire component
 	//helps in keeping AI also use same controls instead of 
