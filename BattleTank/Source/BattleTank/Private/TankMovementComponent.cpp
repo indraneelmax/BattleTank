@@ -12,7 +12,7 @@ void UTankMovementComponent::Initialise(UTankTrack* LeftTrackToSet, UTankTrack* 
 
 void UTankMovementComponent::IntendTankMoveForward(float Throw)
 {
-	if (!LeftTrack || !RightTrack) { return; }
+	if (!ensure(LeftTrack && RightTrack)) { return; }
 
 	//to move back the setting in input key binding have scale -1 
 	//UE_LOG(LogTemp, Warning, TEXT("Intend Move forward throw:%f"), Throw);
@@ -22,7 +22,7 @@ void UTankMovementComponent::IntendTankMoveForward(float Throw)
 
 void UTankMovementComponent::IntendTankTurnRight(float Throw)
 {
-	if (!LeftTrack || !RightTrack) { return; }
+	if (!ensure(LeftTrack && RightTrack)) { return; }
 	//to turn left the setting in input key binding have scale -1 
 	//UE_LOG(LogTemp, Warning, TEXT("Intend Move right throw:%f"), Throw);
 	LeftTrack->SetThrottle(Throw);

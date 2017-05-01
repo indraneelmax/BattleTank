@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "BattleTank.h"
+#include "TankAimingComponent.h"
 #include "Tank.h"
 #include "TankPlayerController.h"
 
@@ -17,6 +18,19 @@ void ATankPlayerController::BeginPlay()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("PLayerController possessing: %s"), *ControlledTank->GetName());
 	}
+
+	//IN begin Play stage, constructor of Aiming Component (added in BP) should have been called
+	//hence aiming comp should exist by now
+	auto AimingComponent = ControlledTank->FindComponentByClass<UTankAimingComponent>();
+	if (!AimingComponent)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Tank Player Controller could not find Aiming Component"));
+	}
+	else 
+	{
+		//Call this event passing the aiming comp which will trigger UI (crosshair) creation
+		FoundAimingComponent(AimingComponent);
+	}
 }
 
 // Called every frame
@@ -30,7 +44,7 @@ void ATankPlayerController::Tick(float DeltaTime)
 
 void ATankPlayerController::AimAtCrosshair()
 {
-	if (!GetControlledTank()) { return; }
+	if (!ensure(GetControlledTank())) { return; }
 	else {
 		//if the crosshair intersects landscape through raytracing
 		//MOve the barrel towards crosshair

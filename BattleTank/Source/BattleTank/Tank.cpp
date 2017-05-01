@@ -45,7 +45,10 @@ void ATank::SetupPlayerInputComponent(class UInputComponent* InputComponent)
 
 void ATank::AimAt(FVector HitLocation)
 {
-	
+	//Tank AIming cOmp is removed from Tank Constr as inherited instead it 
+	//gets created by Unreal and hence need to protect this pointer
+	//check commit-22/23 to find difference
+	if (!ensure(TankAimingComponent)) { return; }
 	TankAimingComponent->AimAt(HitLocation, LaunchSpeed);
 }
 
@@ -55,8 +58,8 @@ void ATank::Fire()
 	//FPlatformTime::Seconds()  returns a "double" type
 	// can use GetWorld()->GetTimeSeconds() as well below
 	bool isReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTime;
-
-	if (Barrel && isReloaded)
+	if (!ensure(Barrel)) { return; }
+	if (isReloaded)
 	{
 		auto Projectile = GetWorld()->SpawnActor<AProjectile>(
 			ProjectileBlueprint,
