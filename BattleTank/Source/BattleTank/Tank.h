@@ -50,10 +50,6 @@ public:
 	void AimAt(FVector HitLocation);
 	UFUNCTION(BlueprintCallable, Category = Firing)
 	void Fire();
-	UFUNCTION(BlueprintCallable, Category= Setups)
-	void SetBarrelReference(UTankBarrel* BarrelToSet);
-	UFUNCTION(BlueprintCallable, Category = Setups)
-	void SetTurretReference(UTankTurret* TurretToSet);
 	UPROPERTY(EditDefaultsOnly, Category = Firing)
 	float LaunchSpeed = 4000;  //speed of projectile 40 m/s
 	double LastFireTime = 0; // by default with f e.g 1f it returns a double type

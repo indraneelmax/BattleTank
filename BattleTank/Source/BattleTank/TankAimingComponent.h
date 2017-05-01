@@ -26,13 +26,12 @@ protected:
 public:	
 
 	void AimAt(FVector HitLocation, float LaunchSpeed);
-
+	UFUNCTION(BlueprintCallable, Category = Setups)
+	void Initialise(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet);
 	UTankBarrel* Barrel = nullptr;
 	UTankTurret* Turret = nullptr;
 
 	UTankAimingComponent();
 
-	void SetBarrelReference(UTankBarrel* BarrelToSet);
-	void SetTurretReference(UTankTurret* TurretToSet);
 	void MoveBarrelTowards(FVector AimDirection);
 };

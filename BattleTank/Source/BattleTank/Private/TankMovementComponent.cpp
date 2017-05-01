@@ -48,7 +48,7 @@ void UTankMovementComponent::RequestDirectMove(const FVector& MoveVelocity, bool
 	//For the turning of the AI tank we would do cross product of the same two unit vec,
 	// The z component of resultant vec will go to the throttle to rightturn;
 	auto RightThrow = FVector::CrossProduct(TankForward, AIForwardIntention);
-	UE_LOG(LogTemp, Warning, TEXT("%s AI tank turn direction : %s "), *TankName,*RightThrow.ToString());
+	//UE_LOG(LogTemp, Warning, TEXT("%s AI tank turn direction : %s "), *TankName,*RightThrow.ToString());
 	IntendTankTurnRight(RightThrow.Z);
 }
 
