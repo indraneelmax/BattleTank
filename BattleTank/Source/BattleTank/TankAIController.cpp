@@ -3,6 +3,7 @@
 #include "BattleTank.h"
 #include "Tank.h"
 #include "TankAIController.h"
+//FYI: TankAICont Depends on TankMovementComponent via Pathfinding !
 
 void ATankAIController::BeginPlay()
 {
@@ -46,7 +47,7 @@ ATank* ATankAIController::GetPlayerTank() const
 {
 	auto PlayerPawn = GetWorld()->GetFirstPlayerController()->GetPawn();
 
-	if (!!ensure(PlayerPawn)) { return nullptr; }
+	if (!ensure(PlayerPawn)) { return nullptr; }
 	
 	return Cast<ATank>(PlayerPawn);
 }

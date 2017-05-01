@@ -10,7 +10,7 @@ class UTankBarrel; // Forward Declaration
 class UTankTurret;
 class UTankAimingComponent;
 class AProjectile;
-class UTankMovementComponent;
+//class UTankMovementComponent;
 
 UCLASS()
 class BATTLETANK_API ATank : public APawn
