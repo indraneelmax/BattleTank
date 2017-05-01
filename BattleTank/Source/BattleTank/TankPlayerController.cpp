@@ -44,6 +44,7 @@ void ATankPlayerController::Tick(float DeltaTime)
 
 void ATankPlayerController::AimAtCrosshair()
 {
+	
 	if (!ensure(GetControlledTank())) { return; }
 	else {
 		//if the crosshair intersects landscape through raytracing

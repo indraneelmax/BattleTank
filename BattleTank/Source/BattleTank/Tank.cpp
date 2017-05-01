@@ -26,7 +26,7 @@ void ATank::BeginPlay()
 {
 	Super::BeginPlay();
 	UE_LOG(LogTemp, Warning, TEXT("Donkey %s TAnk C++ Begin Play"), *GetName());
-	
+	TankAimingComponent = FindComponentByClass<UTankAimingComponent>();
 }
 
 // Called every frame
@@ -48,7 +48,9 @@ void ATank::AimAt(FVector HitLocation)
 	//Tank AIming cOmp is removed from Tank Constr as inherited instead it 
 	//gets created by Unreal and hence need to protect this pointer
 	//check commit-22/23 to find difference
+	
 	if (!ensure(TankAimingComponent)) { return; }
+	UE_LOG(LogTemp, Warning, TEXT("Tank AImAT calling"));
 	TankAimingComponent->AimAt(HitLocation, LaunchSpeed);
 }
 
@@ -58,7 +60,15 @@ void ATank::Fire()
 	//FPlatformTime::Seconds()  returns a "double" type
 	// can use GetWorld()->GetTimeSeconds() as well below
 	bool isReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTime;
-	if (!ensure(Barrel)) { return; }
+	
+	if (!Barrel)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("BArrel nah haibhai ! %s"), *GetName());
+		return;
+	}
+	//enabling below line crashes, although it does the same thing as above if statment
+	//Fails immediately since Aicontroller in tick calls FIRE every frame!
+	//if (!ensure(Barrel)) { return; }
 	if (isReloaded)
 	{
 		auto Projectile = GetWorld()->SpawnActor<AProjectile>(
