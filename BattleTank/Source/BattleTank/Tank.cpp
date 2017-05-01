@@ -17,7 +17,7 @@ ATank::ATank()
 	//All tank aiming stuff dealt in a separate component
 	//Added C++ way instead of blueprint way
 	//Since Tank_BP inherits from Tank class, Tank_BP gets the component (inherits)
-	TankAimingComponent = CreateDefaultSubobject<UTankAimingComponent>(FName("Aiming Component"));
+	//TankAimingComponent = CreateDefaultSubobject<UTankAimingComponent>(FName("Aiming Component"));
 	//TankMovementComponent = CreateDefaultSubobject<UTankMovementComponent>(FName("Movement Component"));
 }
 
