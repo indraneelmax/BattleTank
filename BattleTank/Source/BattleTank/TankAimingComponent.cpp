@@ -14,11 +14,44 @@ UTankAimingComponent::UTankAimingComponent()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
-	PrimaryComponentTick.bCanEverTick = false;
+	PrimaryComponentTick.bCanEverTick = true;
 
 	// ...
 }
 
+void UTankAimingComponent::BeginPlay()
+{
+	LastFireTime = FPlatformTime::Seconds();
+
+}
+void UTankAimingComponent::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
+{
+	//UE_LOG(LogTemp, Warning, TEXT("AIming component TICKING"));
+	if ((FPlatformTime::Seconds() - LastFireTime) < ReloadTime)
+	{
+		FiringState = EFiringState::Reloading;
+	}
+	else if(IsBarrelMoving())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Aiming ...."));
+		FiringState = EFiringState::Aiming;
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT(" LOCKED HA HA ...."));
+		FiringState = EFiringState::Locked;
+	}
+}
+
+bool UTankAimingComponent::IsBarrelMoving()
+{
+	if (!ensure(Barrel)) { return false; }
+	auto BarrelForward = Barrel->GetForwardVector();
+	UE_LOG(LogTemp, Warning, TEXT("BArrel ---  %s"), *BarrelForward.ToString());
+	UE_LOG(LogTemp, Warning, TEXT("Aiming ...."), *AimDirection.ToString());
+	return !BarrelForward.Equals(AimDirection, 0.01);
+
+}
 void UTankAimingComponent::Initialise(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet)
 {
 	Barrel = BarrelToSet;
@@ -27,7 +60,7 @@ void UTankAimingComponent::Initialise(UTankBarrel* BarrelToSet, UTankTurret* Tur
 
 void UTankAimingComponent::AimAt(FVector HitLocation)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Launch Speed: %f"), LaunchSpeed);
+	//UE_LOG(LogTemp, Warning, TEXT("Launch Speed: %f"), LaunchSpeed);
 	
 	auto OurTankName = GetOwner()->GetName();
 	auto BarrelLocation = Barrel->GetComponentLocation().ToString();
@@ -47,7 +80,7 @@ void UTankAimingComponent::AimAt(FVector HitLocation)
 
 	if (result)
 	{
-		auto AimDirection = OutLaunchVelocity.GetSafeNormal();
+		AimDirection = OutLaunchVelocity.GetSafeNormal();
 		auto Time = GetWorld()->GetTimeSeconds();
 		//UE_LOG(LogTemp, Warning, TEXT("%f: %s Projectile Direction calculated as %s"),Time, *OurTankName, *AimDirection.ToString());
 		//Move the Barrel
@@ -87,7 +120,7 @@ void UTankAimingComponent::Fire()
 
 	if (!Barrel)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("BArrel nah haibhai ! %s"), *GetName());
+		UE_LOG(LogTemp, Warning, TEXT("Barrel does not exist: %s"), *GetName());
 		return;
 	}
 	//enabling below line crashes, although it does the same thing as above if statment
@@ -108,5 +141,6 @@ void UTankAimingComponent::Fire()
 		//TODO Fix firing
 		Projectile->LaunchProjectile(LaunchSpeed);
 		LastFireTime = FPlatformTime::Seconds();
+		
 	}
 }

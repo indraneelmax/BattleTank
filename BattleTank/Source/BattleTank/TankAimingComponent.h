@@ -25,24 +25,32 @@ class BATTLETANK_API UTankAimingComponent : public UActorComponent
 protected:
 	UPROPERTY(BlueprintReadOnly, Category= "State")
 	EFiringState FiringState = EFiringState::Locked;
-public:	
+
+private:
+	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
+	virtual void BeginPlay() override;
+
+	UTankBarrel* Barrel = nullptr;
+	UTankTurret* Turret = nullptr;
+	double LastFireTime = 0; // by default with f e.g 1f it returns a double type
+	FVector AimDirection;
+	bool IsBarrelMoving();
 
 	UPROPERTY(EditDefaultsOnly, Category = Firing)
 	float LaunchSpeed = 4000;  //speed of projectile 40 m/s
+	UPROPERTY(EditDefaultsOnly, Category = Firing)
+		float ReloadTime = 3; //sec 
+	UPROPERTY(EditDefaultsOnly, Category = Setup)
+		TSubclassOf <AProjectile> ProjectileBlueprint;
+
+public:	
+
 	void AimAt(FVector HitLocation);
 	UFUNCTION(BlueprintCallable, Category = Setups)
 	void Initialise(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet);
-	UTankBarrel* Barrel = nullptr;
-	UTankTurret* Turret = nullptr;
-
-	UPROPERTY(EditDefaultsOnly, Category = Firing)
-	float ReloadTime = 3; //sec 
-	UPROPERTY(EditDefaultsOnly, Category = Setup)
-	TSubclassOf <AProjectile> ProjectileBlueprint;
 	UFUNCTION(BlueprintCallable, Category = Firing)
 	void Fire();
-	double LastFireTime = 0; // by default with f e.g 1f it returns a double type
-
+	
 	UTankAimingComponent();
 	void MoveBarrelTowards(FVector AimDirection);
 };
