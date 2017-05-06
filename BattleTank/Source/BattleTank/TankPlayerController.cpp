@@ -2,14 +2,13 @@
 
 #include "BattleTank.h"
 #include "TankAimingComponent.h"
-#include "Tank.h"
 #include "TankPlayerController.h"
 
 void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 	UE_LOG(LogTemp, Warning, TEXT("PLayerController class beginPlay"));
-	auto ControlledTank = GetControlledTank();
+	auto ControlledTank = GetPawn();
 	if (!ControlledTank)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("PLayerController not possessing Tank"));
@@ -44,15 +43,19 @@ void ATankPlayerController::Tick(float DeltaTime)
 
 void ATankPlayerController::AimAtCrosshair()
 {
-	
-	if (!ensure(GetControlledTank())) { return; }
+	auto AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
+	if (!ensure(AimingComponent))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Tank Player Controller could not find Aiming Component"));
+		return;
+	}
 	else {
 		//if the crosshair intersects landscape through raytracing
 		//MOve the barrel towards crosshair
 		FVector HitLocation; // OUT Parameter
 		if (GetCrossHairHitLocation(HitLocation))
 		{
-			GetControlledTank()->AimAt(HitLocation);
+			AimingComponent->AimAt(HitLocation);
 			//UE_LOG(LogTemp, Warning, TEXT("Crosshair Hit Location: %s"),*HitLocation.ToString() )
 		}
 	}
@@ -106,8 +109,5 @@ bool ATankPlayerController::GetLookDirection(FVector2D& ScreenLocation, FVector&
 	return DeprojectScreenPositionToWorld(ScreenLocation.X, ScreenLocation.Y, CameraWorldLocation, LookDirection);
 
 }
-ATank* ATankPlayerController::GetControlledTank() const
-{
-	return Cast<ATank>(GetPawn());
-}
+
 

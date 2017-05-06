@@ -8,7 +8,6 @@
 
 class UTankBarrel; // Forward Declaration
 class UTankTurret;
-class UTankAimingComponent;
 class AProjectile;
 //class UTankMovementComponent;
 
@@ -18,8 +17,7 @@ class BATTLETANK_API ATank : public APawn
 	GENERATED_BODY()
 
 protected:
-	UPROPERTY(BlueprintReadOnly)
-	UTankAimingComponent* TankAimingComponent = nullptr;
+
 	//Below is the Fly-by-wire component
 	//helps in keeping AI also use same controls instead of 
 	//directly translating tank for a fair game!
@@ -50,7 +48,6 @@ public:
 	void AimAt(FVector HitLocation);
 	UFUNCTION(BlueprintCallable, Category = Firing)
 	void Fire();
-	UPROPERTY(EditDefaultsOnly, Category = Firing)
-	float LaunchSpeed = 4000;  //speed of projectile 40 m/s
+
 	double LastFireTime = 0; // by default with f e.g 1f it returns a double type
 };

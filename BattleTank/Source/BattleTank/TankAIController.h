@@ -17,7 +17,7 @@ class BATTLETANK_API ATankAIController : public AAIController
 	// Called every frame
 	virtual void Tick(float DeltaSeconds) override;
 public:
-	ATank* GetControlledTank() const;
+	//ATank* GetControlledTank() const;
 	float AcceptanceRadius = 3000;
-	ATank* GetPlayerTank() const;
+	//ATank* GetPlayerTank() const;
 };

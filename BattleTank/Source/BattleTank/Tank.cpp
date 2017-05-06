@@ -5,7 +5,6 @@
 #include "TankBarrel.h"
 #include "Projectile.h"
 //#include "TankMovementComponent.h"
-#include "TankAimingComponent.h"
 
 
 // Sets default values
@@ -22,11 +21,12 @@ ATank::ATank()
 }
 
 // Called when the game starts or when spawned
+
 void ATank::BeginPlay()
 {
 	Super::BeginPlay();
-	UE_LOG(LogTemp, Warning, TEXT("Donkey %s TAnk C++ Begin Play"), *GetName());
-	TankAimingComponent = FindComponentByClass<UTankAimingComponent>();
+	//UE_LOG(LogTemp, Warning, TEXT("Donkey %s TAnk C++ Begin Play"), *GetName());
+	//TankAimingComponent = FindComponentByClass<UTankAimingComponent>();
 }
 
 // Called every frame
@@ -42,7 +42,7 @@ void ATank::SetupPlayerInputComponent(class UInputComponent* InputComponent)
 	Super::SetupPlayerInputComponent(InputComponent);
 
 }
-
+/*
 void ATank::AimAt(FVector HitLocation)
 {
 	//Tank AIming cOmp is removed from Tank Constr as inherited instead it 
@@ -53,6 +53,7 @@ void ATank::AimAt(FVector HitLocation)
 	UE_LOG(LogTemp, Warning, TEXT("Tank AImAT calling"));
 	TankAimingComponent->AimAt(HitLocation, LaunchSpeed);
 }
+*/
 
 
 void ATank::Fire()
@@ -81,7 +82,8 @@ void ATank::Fire()
 			UE_LOG(LogTemp, Warning, TEXT("No Projectile to fire!!"));
 			return;
 		}
-		Projectile->LaunchProjectile(LaunchSpeed);
+		//TODO Fix firing
+		//Projectile->LaunchProjectile(LaunchSpeed);
 		LastFireTime = FPlatformTime::Seconds();
 	}
 }

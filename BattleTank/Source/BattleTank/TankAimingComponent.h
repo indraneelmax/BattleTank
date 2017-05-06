@@ -25,13 +25,14 @@ protected:
 	EFiringState FiringState = EFiringState::Locked;
 public:	
 
-	void AimAt(FVector HitLocation, float LaunchSpeed);
+	UPROPERTY(EditDefaultsOnly, Category = Firing)
+	float LaunchSpeed = 4000;  //speed of projectile 40 m/s
+	void AimAt(FVector HitLocation);
 	UFUNCTION(BlueprintCallable, Category = Setups)
 	void Initialise(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet);
 	UTankBarrel* Barrel = nullptr;
 	UTankTurret* Turret = nullptr;
 
 	UTankAimingComponent();
-
 	void MoveBarrelTowards(FVector AimDirection);
 };
