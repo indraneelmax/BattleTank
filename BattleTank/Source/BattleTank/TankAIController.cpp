@@ -35,24 +35,9 @@ void ATankAIController::Tick(float DeltaSeconds)
 		//Aim & Fire at Player
 		auto AimingComponent = ControlledTank->FindComponentByClass<UTankAimingComponent>();
 		AimingComponent->AimAt(PlayerTank->GetActorLocation());
-		//TODO fix firing
-		//ControlledTank->Fire();
+		
+		AimingComponent->Fire();
 	}
 }
 
-/*
-ATank* ATankAIController::GetControlledTank() const
-{
-	return Cast<ATank>(GetPawn());
-}
-
-ATank* ATankAIController::GetPlayerTank() const
-{
-	auto PlayerPawn = GetWorld()->GetFirstPlayerController()->GetPawn();
-
-	if (!ensure(PlayerPawn)) { return nullptr; }
-	
-	return Cast<ATank>(PlayerPawn);
-}
-*/
 

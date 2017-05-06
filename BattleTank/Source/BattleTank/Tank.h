@@ -41,13 +41,6 @@ private:
 	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
 
 public:
-	UPROPERTY(EditDefaultsOnly, Category = Firing)
-	float ReloadTime = 3; //sec 
-	UPROPERTY(EditDefaultsOnly, Category = Setup)
-	TSubclassOf <AProjectile> ProjectileBlueprint;
-	void AimAt(FVector HitLocation);
-	UFUNCTION(BlueprintCallable, Category = Firing)
-	void Fire();
 
-	double LastFireTime = 0; // by default with f e.g 1f it returns a double type
+
 };

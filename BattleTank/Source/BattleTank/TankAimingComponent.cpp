@@ -4,7 +4,9 @@
 //Need to include below as we call methods on Barrel object
 #include "TankBarrel.h"
 #include "TankTurret.h"
+#include "Projectile.h"
 #include "TankAimingComponent.h"
+
 
 
 // Sets default values for this component's properties
@@ -76,3 +78,35 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 	
 }
 
+
+void UTankAimingComponent::Fire()
+{
+	//FPlatformTime::Seconds()  returns a "double" type
+	// can use GetWorld()->GetTimeSeconds() as well below
+	bool isReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTime;
+
+	if (!Barrel)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("BArrel nah haibhai ! %s"), *GetName());
+		return;
+	}
+	//enabling below line crashes, although it does the same thing as above if statment
+	//Fails immediately since Aicontroller in tick calls FIRE every frame!
+	//if (!ensure(Barrel)) { return; }
+	if (isReloaded)
+	{
+		auto Projectile = GetWorld()->SpawnActor<AProjectile>(
+			ProjectileBlueprint,
+			Barrel->GetSocketLocation(FName("Projectile")),
+			Barrel->GetSocketRotation(FName("Projectile"))
+			);
+		if (!Projectile)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("No Projectile to fire!!"));
+			return;
+		}
+		//TODO Fix firing
+		Projectile->LaunchProjectile(LaunchSpeed);
+		LastFireTime = FPlatformTime::Seconds();
+	}
+}

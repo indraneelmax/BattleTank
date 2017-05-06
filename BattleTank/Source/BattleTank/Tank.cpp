@@ -2,8 +2,6 @@
 
 #include "BattleTank.h"
 #include "Tank.h"
-#include "TankBarrel.h"
-#include "Projectile.h"
 //#include "TankMovementComponent.h"
 
 
@@ -11,7 +9,7 @@
 ATank::ATank()
 {
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 	UE_LOG(LogTemp, Warning, TEXT("Donkey %s TAnk C++ Construct"), *GetName());
 	//All tank aiming stuff dealt in a separate component
 	//Added C++ way instead of blueprint way
@@ -42,48 +40,4 @@ void ATank::SetupPlayerInputComponent(class UInputComponent* InputComponent)
 	Super::SetupPlayerInputComponent(InputComponent);
 
 }
-/*
-void ATank::AimAt(FVector HitLocation)
-{
-	//Tank AIming cOmp is removed from Tank Constr as inherited instead it 
-	//gets created by Unreal and hence need to protect this pointer
-	//check commit-22/23 to find difference
-	
-	if (!ensure(TankAimingComponent)) { return; }
-	UE_LOG(LogTemp, Warning, TEXT("Tank AImAT calling"));
-	TankAimingComponent->AimAt(HitLocation, LaunchSpeed);
-}
-*/
 
-
-void ATank::Fire()
-{
-	//FPlatformTime::Seconds()  returns a "double" type
-	// can use GetWorld()->GetTimeSeconds() as well below
-	bool isReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTime;
-	
-	if (!Barrel)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("BArrel nah haibhai ! %s"), *GetName());
-		return;
-	}
-	//enabling below line crashes, although it does the same thing as above if statment
-	//Fails immediately since Aicontroller in tick calls FIRE every frame!
-	//if (!ensure(Barrel)) { return; }
-	if (isReloaded)
-	{
-		auto Projectile = GetWorld()->SpawnActor<AProjectile>(
-			ProjectileBlueprint,
-			Barrel->GetSocketLocation(FName("Projectile")),
-			Barrel->GetSocketRotation(FName("Projectile"))
-			);
-		if (!Projectile)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("No Projectile to fire!!"));
-			return;
-		}
-		//TODO Fix firing
-		//Projectile->LaunchProjectile(LaunchSpeed);
-		LastFireTime = FPlatformTime::Seconds();
-	}
-}

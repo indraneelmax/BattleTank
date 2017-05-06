@@ -5,6 +5,7 @@
 #include "Components/ActorComponent.h"
 #include "TankAimingComponent.generated.h"
 
+
 UENUM()
 enum class EFiringState : uint8
 {
@@ -15,6 +16,7 @@ enum class EFiringState : uint8
 
 class UTankBarrel;
 class UTankTurret;
+class AProjectile;
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BATTLETANK_API UTankAimingComponent : public UActorComponent
 {
@@ -32,6 +34,14 @@ public:
 	void Initialise(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet);
 	UTankBarrel* Barrel = nullptr;
 	UTankTurret* Turret = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, Category = Firing)
+	float ReloadTime = 3; //sec 
+	UPROPERTY(EditDefaultsOnly, Category = Setup)
+	TSubclassOf <AProjectile> ProjectileBlueprint;
+	UFUNCTION(BlueprintCallable, Category = Firing)
+	void Fire();
+	double LastFireTime = 0; // by default with f e.g 1f it returns a double type
 
 	UTankAimingComponent();
 	void MoveBarrelTowards(FVector AimDirection);
