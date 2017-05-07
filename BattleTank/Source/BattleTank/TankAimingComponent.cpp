@@ -33,12 +33,12 @@ void UTankAimingComponent::TickComponent(float DeltaTime, enum ELevelTick TickTy
 	}
 	else if(IsBarrelMoving())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Aiming ...."));
+		//UE_LOG(LogTemp, Warning, TEXT("Aiming ...."));
 		FiringState = EFiringState::Aiming;
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT(" LOCKED HA HA ...."));
+		//UE_LOG(LogTemp, Warning, TEXT(" LOCKED HA HA ...."));
 		FiringState = EFiringState::Locked;
 	}
 }
@@ -47,8 +47,8 @@ bool UTankAimingComponent::IsBarrelMoving()
 {
 	if (!ensure(Barrel)) { return false; }
 	auto BarrelForward = Barrel->GetForwardVector();
-	UE_LOG(LogTemp, Warning, TEXT("BArrel ---  %s"), *BarrelForward.ToString());
-	UE_LOG(LogTemp, Warning, TEXT("Aiming ...."), *AimDirection.ToString());
+	//(LogTemp, Warning, TEXT("BArrel ---  %s"), *BarrelForward.ToString());
+	//UE_LOG(LogTemp, Warning, TEXT("Aiming ...."), *AimDirection.ToString());
 	return !BarrelForward.Equals(AimDirection, 0.01);
 
 }
@@ -86,7 +86,7 @@ void UTankAimingComponent::AimAt(FVector HitLocation)
 		//Move the Barrel
 		//Barrel->MoveTo(AimDirection.Rotation().Pitch);
 		//Unused 
-		MoveBarrelTowards(AimDirection);
+		MoveBarrelTowards();
 	}
 	else
 	{ // NO result found
@@ -97,13 +97,13 @@ void UTankAimingComponent::AimAt(FVector HitLocation)
 }
 
 
-void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
+void UTankAimingComponent::MoveBarrelTowards()
 {
 	if (!ensure(Barrel && Turret)) { return; }
 	auto AimAsRotator = AimDirection.Rotation();
 	auto BarrelRotator = Barrel->GetForwardVector().Rotation();
 	auto DeltaRotator = AimAsRotator - BarrelRotator;
-	UE_LOG(LogTemp, Warning, TEXT("Move Barrel to %s"), *DeltaRotator.ToString());
+	//UE_LOG(LogTemp, Warning, TEXT("Move Barrel to %s"), *DeltaRotator.ToString());
 	// Move the barrel according to elevation speed just the right amount
 	// this frame
 	Barrel->MoveTo(DeltaRotator.Pitch);
