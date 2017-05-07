@@ -27,7 +27,12 @@ void UTankAimingComponent::BeginPlay()
 void UTankAimingComponent::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
 {
 	//UE_LOG(LogTemp, Warning, TEXT("AIming component TICKING"));
-	if ((FPlatformTime::Seconds() - LastFireTime) < ReloadTime)
+	if (RoundsLeft < 1)
+	{
+		FiringState = EFiringState::OutOfAmmo;
+		//UE_LOG(LogTemp, Warning, TEXT("SEtting state to OUT OF AMMO"));
+	}
+	else if ((FPlatformTime::Seconds() - LastFireTime) < ReloadTime)
 	{
 		FiringState = EFiringState::Reloading;
 	}
@@ -58,6 +63,10 @@ EFiringState UTankAimingComponent::GetFiringState() const
 	return FiringState;
 }
 
+int UTankAimingComponent::GetRoundsLeft() const
+{
+	return RoundsLeft;
+}
 
 void UTankAimingComponent::Initialise(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet)
 {
@@ -114,10 +123,18 @@ void UTankAimingComponent::MoveBarrelTowards()
 	// Move the barrel according to elevation speed just the right amount
 	// this frame
 	Barrel->MoveTo(DeltaRotator.Pitch);
-	Turret->Rotate(DeltaRotator.Yaw);
+
+	if (FMath::Abs(DeltaRotator.Yaw) < 180)
+	{
+		Turret->Rotate(DeltaRotator.Yaw);
+	}
+	else
+	{ //Avoid rotating turret the long way
+		Turret->Rotate(-DeltaRotator.Yaw);
+	}
+
 	
 }
-
 
 void UTankAimingComponent::Fire()
 {
@@ -130,11 +147,14 @@ void UTankAimingComponent::Fire()
 		UE_LOG(LogTemp, Warning, TEXT("Barrel does not exist: %s"), *GetName());
 		return;
 	}
+	
+	
 	//enabling below line crashes, although it does the same thing as above if statment
 	//Fails immediately since Aicontroller in tick calls FIRE every frame!
 	//if (!ensure(Barrel)) { return; }
-	if (isReloaded)
-	{
+	if (isReloaded && (FiringState == EFiringState::Locked || FiringState == EFiringState::Aiming))
+	{		
+		//Fire when aiming/locked only!
 		auto Projectile = GetWorld()->SpawnActor<AProjectile>(
 			ProjectileBlueprint,
 			Barrel->GetSocketLocation(FName("Projectile")),
@@ -147,6 +167,7 @@ void UTankAimingComponent::Fire()
 		}
 		//TODO Fix firing
 		Projectile->LaunchProjectile(LaunchSpeed);
+		RoundsLeft--;
 		LastFireTime = FPlatformTime::Seconds();
 		
 	}
