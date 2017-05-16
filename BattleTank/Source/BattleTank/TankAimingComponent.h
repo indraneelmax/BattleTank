@@ -26,6 +26,7 @@ class BATTLETANK_API UTankAimingComponent : public UActorComponent
 protected:
 	UPROPERTY(BlueprintReadOnly, Category= "State")
 	EFiringState FiringState = EFiringState::Locked;
+	UPROPERTY(EditDefaultsOnly, Category = Firing)
 	int RoundsLeft = 3;
 	
 private:
