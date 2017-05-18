@@ -116,7 +116,7 @@ bool ATankPlayerController::GetLookVectorHitLocation(FVector& LookDirection, FVe
 			HitResult,
 			StartLocation,
 			EndLocation,
-			ECollisionChannel::ECC_Visibility))
+			ECollisionChannel::ECC_Camera)) //ECC_Camera ignores UI widgets to be taken as elements for trace
 	{
 		HitLocation = HitResult.Location;
 		return true;
