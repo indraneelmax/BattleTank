@@ -51,6 +51,7 @@ void ATankPlayerController::SetPawn(APawn* InPawn)
 		if (!ensure(PossesedTank)) { return; }
 
 		//TODO Subscribe our local method to the tank's death event
+		//OnDeath is the event and OnPossesedTankDeath will be func called
 		PossesedTank->OnDeath.AddDynamic(this, &ATankPlayerController::OnPossesedTankDeath);
 	}
 }
@@ -58,6 +59,7 @@ void ATankPlayerController::SetPawn(APawn* InPawn)
 void ATankPlayerController::OnPossesedTankDeath()
 {
 	UE_LOG(LogTemp, Warning, TEXT("IN TANK PLAYER RECEIVED"));
+	StartSpectatingOnly();
 
 }
 void ATankPlayerController::AimAtCrosshair()

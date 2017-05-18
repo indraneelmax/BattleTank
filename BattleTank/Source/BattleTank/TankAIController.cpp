@@ -39,6 +39,7 @@ void ATankAIController::SetPawn(APawn* InPawn)
 void ATankAIController::OnPossesedTankDeath()
 {
 	UE_LOG(LogTemp, Warning, TEXT("TANK AI CALLED "));
+	GetPawn()->DetachFromControllerPendingDestroy();
 }
 // Called every frame
 void ATankAIController::Tick(float DeltaSeconds)

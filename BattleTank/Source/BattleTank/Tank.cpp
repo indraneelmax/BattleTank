@@ -23,6 +23,7 @@ ATank::ATank()
 void ATank::BeginPlay()
 {
 	Super::BeginPlay();
+	CurrentHealth = StartingHealth; //Initialise health if set in Blueprint as well!
 	//UE_LOG(LogTemp, Warning, TEXT("Donkey %s TAnk C++ Begin Play"), *GetName());
 	//TankAimingComponent = FindComponentByClass<UTankAimingComponent>();
 }
