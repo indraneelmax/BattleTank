@@ -53,11 +53,18 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, U
 	ImpactBlast->Activate();
 	ExplosionForce->FireImpulse();
 
-	SetRootComponent(ImpactBlast);
+	SetRootComponent(ImpactBlast); //we want to destroy/delete our collisionmesh but before have to unset as root
 	CollisionMesh->DestroyComponent();
 
+	UGameplayStatics::ApplyRadialDamage(this,
+		ProjectileDamage,
+		GetActorLocation(),
+		ExplosionForce->Radius, //Its a radial damage system so we use the centre of explosion itself
+		UDamageType::StaticClass(),
+		TArray<AActor*>()); //No list of actors passed i.e. affect all actors in Radius
+
 	FTimerHandle Timer; //OUT parameter in below
-	
+	//Sets a Timer for DeostroyDelay seconds and call OnTimerExpire !
 	GetWorld()->GetTimerManager().SetTimer(Timer, this, &AProjectile::OnTimerExpire, DestroyDelay, false);
 }
 

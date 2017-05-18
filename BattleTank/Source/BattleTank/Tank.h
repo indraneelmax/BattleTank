@@ -40,7 +40,20 @@ private:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
 
-public:
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+	int32 StartingHealth = 100;
+	
+	UPROPERTY(VisibleAnywhere, Category = "Health")
+	int32 CurrentHealth = StartingHealth;
 
+public:
+	//makes this read only function that does not change anything
+	UFUNCTION(BlueprintPure, Category = "Health")
+	float GetCurrentHealthPercent() const;
+	//Called by the Engine itself when a ApplyDamage is called by projectile for us
+	virtual float TakeDamage(float Damage,
+		struct FDamageEvent const& DamageEvent,
+		class AController* EventInstigator,
+		class AActor* DamageCauser);
 
 };

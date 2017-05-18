@@ -41,3 +41,27 @@ void ATank::SetupPlayerInputComponent(class UInputComponent* InputComponent)
 
 }
 
+float ATank::TakeDamage(float Damage,
+	struct FDamageEvent const& DamageEvent,
+	class AController* EventInstigator,
+	class AActor* DamageCauser)
+{
+	//
+	int32 DamagePoints = FPlatformMath::RoundToInt(Damage);
+	int32 DamageToApply = FMath::Clamp<int32>(DamagePoints, 0, CurrentHealth);
+	CurrentHealth -= DamageToApply;
+
+	UE_LOG(LogTemp, Warning, TEXT("Damage: %d  ->  DamageToApply : %d "), DamagePoints, DamageToApply);
+
+	if (CurrentHealth <= 0)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Tank DIED"));
+
+	}
+	return DamageToApply;
+}
+
+float ATank::GetCurrentHealthPercent() const
+{
+	return  float(CurrentHealth)/ float(StartingHealth);
+}
