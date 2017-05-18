@@ -22,7 +22,9 @@ protected:
 private:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
-	
+	UFUNCTION()
+	void OnPossesedTankDeath();
+	virtual void SetPawn(APawn* InPawn) override;
 	void AimAtCrosshair();
 	bool GetCrossHairHitLocation(FVector&);
 	UPROPERTY(EditDefaultsOnly)

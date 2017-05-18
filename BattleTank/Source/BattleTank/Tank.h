@@ -6,6 +6,8 @@
 #include "GameFramework/Pawn.h"
 #include "Tank.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FTankDelegate); // Implementing OnDeath - Dynamic Delegate
+
 class UTankBarrel; // Forward Declaration
 class UTankTurret;
 class AProjectile;
@@ -55,5 +57,5 @@ public:
 		struct FDamageEvent const& DamageEvent,
 		class AController* EventInstigator,
 		class AActor* DamageCauser);
-
+	FTankDelegate OnDeath; //Declaring the death event
 };

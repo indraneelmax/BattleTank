@@ -11,7 +11,10 @@ UCLASS()
 class BATTLETANK_API ATankAIController : public AAIController
 {
 	GENERATED_BODY()
-	
+	//Overriding SetPawn to implement OnDeath Delegate!
+	virtual void ATankAIController::SetPawn(APawn* InPawn) override;
+	UFUNCTION()
+	void OnPossesedTankDeath();
 	virtual void BeginPlay() override;
 	// Called every frame
 	virtual void Tick(float DeltaSeconds) override;
