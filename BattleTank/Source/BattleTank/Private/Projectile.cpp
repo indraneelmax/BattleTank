@@ -29,12 +29,12 @@ AProjectile::AProjectile()
 
 	ExplosionForce = CreateDefaultSubobject<URadialForceComponent>(FName("Explosion Force"));
 	ExplosionForce->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
-
+	/*
 	static ConstructorHelpers::FObjectFinder<UParticleSystem> PFIRE(TEXT("ParticleSystem'/Game/StarterContent/Particles/P_Fire.P_Fire'"));
-	static ConstructorHelpers::FObjectFinder<UParticleSystem> PEXPLOSION(TEXT("ParticleSystem'/Game/StarterContent/Particles/P_Explosion.P_Explosion'"));
+	static ConstructorHelpers::FObjectFinder<UParticleSystem> PEXPLOSION(TEXT("ParticleSystem'/Game/StarterContent/Particles/P_Explosion.P_Explosion''"));
 	ImpactBlast->SetTemplate(PFIRE.Object);
 	LaunchBlast->SetTemplate(PEXPLOSION.Object);
-
+	*/
 }
 
 // Called when the game starts or when spawned
