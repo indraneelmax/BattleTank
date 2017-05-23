@@ -16,6 +16,13 @@ ATank::ATank()
 	//Since Tank_BP inherits from Tank class, Tank_BP gets the component (inherits)
 	//TankAimingComponent = CreateDefaultSubobject<UTankAimingComponent>(FName("Aiming Component"));
 	//TankMovementComponent = CreateDefaultSubobject<UTankMovementComponent>(FName("Movement Component"));
+	
+	//Below is code to attach a particle fx to tank as it would crash doing in BP
+	//FireOnDeath = CreateDefaultSubobject<UParticleSystemComponent>(FName("Fire On Death"));
+	//FireOnDeath->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+	//FireOnDeath->bAutoActivate = false; //Needs to activate on Death 
+	//static ConstructorHelpers::FObjectFinder<UParticleSystem> PFIRE(TEXT("ParticleSystem'/Game/StarterContent/Particles/P_Explosion.P_Explosion'"));
+	//FireOnDeath->SetTemplate(PFIRE.Object);
 }
 
 // Called when the game starts or when spawned
@@ -26,6 +33,7 @@ void ATank::BeginPlay()
 	CurrentHealth = StartingHealth; //Initialise health if set in Blueprint as well!
 	//UE_LOG(LogTemp, Warning, TEXT("Donkey %s TAnk C++ Begin Play"), *GetName());
 	//TankAimingComponent = FindComponentByClass<UTankAimingComponent>();
+
 }
 
 // Called every frame
@@ -57,7 +65,11 @@ float ATank::TakeDamage(float Damage,
 	if (CurrentHealth <= 0)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Tank DIED"));
+		//FireOnDeath->Activate();
+		auto FireOnDeath = FindComponentByClass<UParticleSystemComponent>();
+		FireOnDeath->Activate();
 		OnDeath.Broadcast(); //Broadcast - let subscribers do what they want
+		
 
 	}
 	return DamageToApply;
